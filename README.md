@@ -13,12 +13,12 @@ In your _build.gradle_ file add:
 	  }
 	
 	  dependencies {
-	    classpath 'nl.javadude:appengine-gradle-plugin:0.2@jar'
+	    classpath 'com.xebia:appengine-gradle-plugin:0.2@jar'
 	    classpath 'appengine:tools-api:1.3.2@jar'
 	  }
 	}
 
-    usePlugin nl.javadude.gradle.plugins.AppEngine
+    usePlugin com.xebia.gradle.plugins.AppEngine
 
 ## Usage
 ### Deploy

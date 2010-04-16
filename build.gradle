@@ -4,7 +4,7 @@ usePlugin 'groovy'
 usePlugin 'maven'
 usePlugin 'eclipse'
 
-group = 'nl.javadude'
+group = 'com.xebia'
 version = '0.2'
 
 uploadArchives {

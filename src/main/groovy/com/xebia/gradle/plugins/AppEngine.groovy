@@ -1,4 +1,4 @@
-package nl.javadude.gradle.plugins
+package com.xebia.gradle.plugins
 
 import com.google.appengine.tools.admin.AppCfg
 import org.apache.ivy.plugins.resolver.URLResolver
