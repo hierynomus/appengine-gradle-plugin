@@ -23,5 +23,5 @@ In your _build.gradle_ file add:
 ## Usage
 ### Deploy
 In order to deploy your application to Google AppEngine you can simply execute the following command:
-§	gradle upload
+	gradle upload
 
