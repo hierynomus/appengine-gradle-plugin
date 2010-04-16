@@ -1,7 +1,7 @@
 # Google AppEngine Gradle Plugin
 This plugin can be used to upload an application built with Gradle to AppEngine
 
-## Usage
+## Configuring
 In your _build.gradle_ file add:
 
 	buildscript {
@@ -19,3 +19,9 @@ In your _build.gradle_ file add:
 	}
 
     usePlugin nl.javadude.gradle.plugins.AppEngine
+
+## Usage
+### Deploy
+In order to deploy your application to Google AppEngine you can simply execute the following command:
+§	gradle upload
+
