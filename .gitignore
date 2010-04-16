@@ -1,5 +1,9 @@
 build
 *.eml
 *.iml
+*.ipr
+*.iws
 .idea
-
+.classpath*
+.project
+.settings

@@ -1,49 +1,71 @@
-package com.xebia.gradle.plugins
+package nl.javadude.gradle.plugins
 
-import org.gradle.api.*
-import org.gradle.api.plugins.*
 import com.google.appengine.tools.admin.AppCfg
+import org.apache.ivy.plugins.resolver.URLResolver
+import org.gradle.api.InvalidUserDataException
+import org.gradle.api.Plugin
+import org.gradle.api.Project
+import org.gradle.api.plugins.ProjectPluginsContainer
 
 class AppEngine implements Plugin {
   void use(Project project, ProjectPluginsContainer pluginContainer) {
+    configureWarPlugin(project)
+
+    project.convention.plugins.appengine = new AppEnginePluginConvention(project)
+
+    project.configurations {
+      appengine
+    }
+    
+    addDependencies(project)
+
+    project.task('upload') << {
+      AppCfg.main("update", project.convention.plugins.appengine.exploded.toString())
+    }
+
+    project.upload.dependsOn project.war
+  }
+
+  def addDependencies(org.gradle.api.Project project) {
+    project.dependencies {
+      appengine "appengine:tools-api:1.3.2@jar"
+    }
+    project.repositories {
+      add(new URLResolver()) {
+        name = "GitHub AppEngine Gradle Plugin"
+        addArtifactPattern 'http://github.com/hierynomus/appengine-gradle-plugin/downloads/[organization]-[module]-[revision].[ext]'
+      }
+    }
+  }
+
+  def configureWarPlugin(Project project) {
     if (!project.plugins.hasPlugin('war')) {
       throw new InvalidUserDataException("For AppEngine plugin, the war plugin should be enabled!")
     }
 
-    project.convention.plugins.appengine = new AppEnginePluginConvention(project)
-
-    def war = project.tasks.findByName("war")
-
     // Add the exploded-war to the war task
-    def exploded = new File(project.buildDir, "exploded-war")
-    war.doLast {
-      ant.unzip(src: war.archivePath, dest: exploded)
+    project.war.doLast {
+      ant.unzip(src: project.war.archivePath, dest: project.convention.plugins.appengine.exploded)
     }
-
-    project.task('upload') << {
-      project.convention.plugins.appengine.init()
-      AppCfg.main("update", exploded.toString())
-    }
-
-    
-
-    project.tasks.findByName('upload').dependsOn war
   }
 }
 
 class AppEnginePluginConvention {
   Properties props = new Properties()
   Project project
+  File exploded
 
   def AppEnginePluginConvention(project) {
-    this.project = project;
+    this.project = project
     if (!new File("appengine.properties").exists()) {
       throw new InvalidUserDataException("appengine.properties should exist in build root dir")
     }
     props.load(new FileInputStream("appengine.properties"))
+    init()
   }
 
   def init() {
+    exploded = new File(project.buildDir, "exploded-war")
     System.setProperty("appengine.sdk.root", appEngineSdkRoot)
   }
 

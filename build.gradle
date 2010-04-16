@@ -2,9 +2,10 @@ defaultTasks "clean", "build"
 
 usePlugin 'groovy'
 usePlugin 'maven'
+usePlugin 'eclipse'
 
-group = 'nl.javadude.gradle.plugins'
-version = '0.1'
+group = 'nl.javadude'
+version = '0.2'
 
 uploadArchives {
 	repositories.mavenDeployer {
@@ -17,7 +18,7 @@ uploadArchives.dependsOn ":build"
 repositories {
   add(new org.apache.ivy.plugins.resolver.URLResolver()) {
     name = "GitHub"
-    addArtifactPattern 'http://github.com/asikkema/adoptimizer/downloads/[organization]-[module]-[revision].[ext]'
+    addArtifactPattern 'http://github.com/hierynomus/appengine-gradle-plugin/downloads/[organization]-[module]-[revision].[ext]'
   }
 }
 
